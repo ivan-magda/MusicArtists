@@ -14,6 +14,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        GetRawData getRawData = new GetRawData("http://download.cdn.yandex.net/mobilization-2016/artists.json");
+        getRawData.execute();
     }
 
     @Override
