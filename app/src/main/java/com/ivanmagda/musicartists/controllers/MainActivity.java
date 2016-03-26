@@ -1,10 +1,13 @@
-package com.ivanmagda.musicartists;
+package com.ivanmagda.musicartists.controllers;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.ivanmagda.musicartists.model.json.GetArtistJsonData;
+import com.ivanmagda.musicartists.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -15,8 +18,9 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        GetRawData getRawData = new GetRawData("http://download.cdn.yandex.net/mobilization-2016/artists.json");
-        getRawData.execute();
+        String destinationURL = "http://download.cdn.yandex.net/mobilization-2016/artists.json";
+        GetArtistJsonData getArtistJsonData = new GetArtistJsonData(destinationURL);
+        getArtistJsonData.execute();
     }
 
     @Override

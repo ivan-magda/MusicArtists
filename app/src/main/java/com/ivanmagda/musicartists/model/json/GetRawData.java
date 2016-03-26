@@ -1,4 +1,4 @@
-package com.ivanmagda.musicartists;
+package com.ivanmagda.musicartists.model.json;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -74,6 +74,12 @@ public class GetRawData {
         return downloadStatus;
     }
 
+    // Setters.
+
+    public void setRawURL(String rawURL) {
+        this.rawURL = rawURL;
+    }
+
     // Methods.
 
     /**
@@ -146,17 +152,17 @@ public class GetRawData {
                 }
 
                 // Will be storing response data.
-                StringBuffer buffer = new StringBuffer();
+                StringBuilder stringBuilder = new StringBuilder();
 
                 reader = new BufferedReader((new InputStreamReader(inputStream)));
 
                 // Reading each line of the data.
                 String line;
                 while ((line = reader.readLine()) != null) {
-                    buffer.append(line + "\n");
+                    stringBuilder.append(line).append("\n");
                 }
 
-                return buffer.toString();
+                return stringBuilder.toString();
             } catch (IOException exception) {
                 Log.e(LOG_TAG, "Failed to download raw data", exception);
                 return null;
