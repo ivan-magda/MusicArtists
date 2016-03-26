@@ -6,7 +6,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.ivanmagda.musicartists.model.json.GetArtistJsonData;
 import com.ivanmagda.musicartists.R;
 
 public class MainActivity extends AppCompatActivity {
@@ -17,10 +16,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        String destinationURL = "http://download.cdn.yandex.net/mobilization-2016/artists.json";
-        GetArtistJsonData getArtistJsonData = new GetArtistJsonData(destinationURL);
-        getArtistJsonData.execute();
     }
 
     @Override

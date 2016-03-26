@@ -1,52 +1,31 @@
 package com.ivanmagda.musicartists.model;
 
-import android.util.Log;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-
-interface ArtistJSONResponseKey {
-    // General.
-    String Id = "id";
-    String Name = "name";
-    String Genres = "genres";
-    String Tracks = "tracks";
-    String Albums = "albums";
-    String Link = "link";
-    String Description = "description";
-
-    // Cover.
-    String Cover = "cover";
-    String CoverSmall = "small";
-    String CoverBig = "big";
-}
 
 /**
  * Represents music artist.
  */
-public class Artist {
+public class Artist implements Parcelable {
 
     // Properties.
 
-    private String LOG_TAG = Artist.class.getSimpleName();
+    private static String LOG_TAG = Artist.class.getSimpleName();
 
-    private Integer id;
+    private long id;
     private String name;
     private String[] genres;
-    private Integer tracks;
-    private Integer albums;
-    private String link = null;
+    private int tracks;
+    private int albums;
+    private String link;
     private String description;
     private Cover cover;
 
     // Initializers.
 
-    public Artist(Integer id, String name, String[] genres, Integer tracks, Integer albums, String link, String description, Cover cover) {
+    public Artist(long id, String name, String[] genres, int tracks, int albums, String link, String description, Cover cover) {
         this.id = id;
         this.name = name;
         this.genres = genres;
@@ -57,45 +36,20 @@ public class Artist {
         this.cover = cover;
     }
 
-    public Artist(JSONObject jsonArtist) {
-        try {
-            // Access values from the fields.
-            id = jsonArtist.getInt(ArtistJSONResponseKey.Id);
-            name = jsonArtist.getString(ArtistJSONResponseKey.Name);
-            tracks = jsonArtist.getInt(ArtistJSONResponseKey.Tracks);
-            albums = jsonArtist.getInt(ArtistJSONResponseKey.Albums);
-            description = jsonArtist.getString(ArtistJSONResponseKey.Description);
-
-            // Artist may do not have a link to the personal site.
-            if (jsonArtist.has(ArtistJSONResponseKey.Link)) {
-                link = jsonArtist.getString(ArtistJSONResponseKey.Link);
-            }
-
-            // Get genres.
-            List<String> genresList = new ArrayList<>();
-            JSONArray genresArray = jsonArtist.getJSONArray(ArtistJSONResponseKey.Genres);
-            int length = genresArray.length();
-            for (int i = 0; i < length; i++) {
-                genresList.add(genresArray.getString(i));
-            }
-            // Convert ArrayList<String> to String[] array.
-            genres = new String[genresList.size()];
-            genres = genresList.toArray(genres);
-
-            // Get cover.
-            JSONObject coverObject = jsonArtist.getJSONObject(ArtistJSONResponseKey.Cover);
-            String coverSmall = coverObject.getString(ArtistJSONResponseKey.CoverSmall);
-            String coverBig = coverObject.getString(ArtistJSONResponseKey.CoverBig);
-            cover = new Cover(coverSmall, coverBig);
-        } catch (JSONException jsonError) {
-            jsonError.printStackTrace();
-            Log.e(LOG_TAG, "Failed to processing JSON data");
-        }
+    protected Artist(Parcel in) {
+        id = in.readLong();
+        name = in.readString();
+        genres = in.createStringArray();
+        tracks = in.readInt();
+        albums = in.readInt();
+        link = in.readString();
+        description = in.readString();
+        cover = in.readParcelable(Cover.class.getClassLoader());
     }
 
     // Getters.
 
-    public Integer getId() {
+    public long getId() {
         return id;
     }
 
@@ -107,11 +61,11 @@ public class Artist {
         return genres;
     }
 
-    public Integer getTracks() {
+    public int getTracks() {
         return tracks;
     }
 
-    public Integer getAlbums() {
+    public int getAlbums() {
         return albums;
     }
 
@@ -139,6 +93,37 @@ public class Artist {
                 ", description='" + description + '\'' +
                 ", cover=" + cover +
                 '}';
+    }
+
+    // Parcelable.
+
+    public static final Creator<Artist> CREATOR = new Creator<Artist>() {
+        @Override
+        public Artist createFromParcel(Parcel in) {
+            return new Artist(in);
+        }
+
+        @Override
+        public Artist[] newArray(int size) {
+            return new Artist[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(id);
+        dest.writeString(name);
+        dest.writeStringArray(genres);
+        dest.writeInt(tracks);
+        dest.writeInt(albums);
+        dest.writeString(link);
+        dest.writeString(description);
+        dest.writeParcelable(cover, flags);
     }
 
 }
