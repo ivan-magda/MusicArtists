@@ -1,6 +1,7 @@
 package com.ivanmagda.musicartists.api;
 
 
+import android.net.Uri;
 import android.util.Log;
 
 import com.ivanmagda.musicartists.model.Artist;
@@ -13,11 +14,17 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ArtistHttpApi {
+public class ArtistHttpApi extends HttpApi {
 
     // Properties.
 
     private static String LOG_TAG = ArtistHttpApi.class.getSimpleName();
+
+    // URLs.
+    private static final String API_SCHEME = "http";
+    private static final String API_HOST = "download.cdn.yandex.net";
+    private static final String API_PATH = "mobilization-2016";
+    private static final String ARTISTS_API_METHOD = "artists.json";
 
     // General JSON response keys.
     private static final String ID_KEY = "id";
@@ -31,10 +38,28 @@ public class ArtistHttpApi {
     // Cover JSON response keys.
     private static final String COVER_KEY = "cover";
     private static final String COVER_SMALL_KEY = "small";
-    private static final String COVER_Big_KEY = "big";
+    private static final String COVER_BIG_KEY = "big";
+
+    // Requests.
 
     public static List<Artist> getArtists() {
-        return parseArtists(HttpAPI.execute("mobilization-2016/artists.json"));
+        String url = artistsURLWithPathExtension(ARTISTS_API_METHOD);
+        return parseArtists(execute(url));
+    }
+
+    // Helpers.
+
+    private static String artistsURLWithPathExtension(String path) {
+        Uri.Builder builder = new Uri.Builder();
+        builder.scheme(API_SCHEME)
+                .authority(API_HOST)
+                .appendPath(API_PATH);
+
+        if (path != null) {
+            builder.appendPath(path);
+        }
+
+        return builder.build().toString();
     }
 
     // Parsing JSON data.
@@ -88,7 +113,7 @@ public class ArtistHttpApi {
             // Get cover.
             JSONObject coverObject = jsonObject.getJSONObject(COVER_KEY);
             String coverSmall = coverObject.getString(COVER_SMALL_KEY);
-            String coverBig = coverObject.getString(COVER_Big_KEY);
+            String coverBig = coverObject.getString(COVER_BIG_KEY);
             Cover cover = new Cover(coverSmall, coverBig);
 
             artist = new Artist(id, name, genres, tracks, albums, link, description, cover);

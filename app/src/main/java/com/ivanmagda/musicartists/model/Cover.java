@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 /**
  * Represents cover image of the artist.
- * <p>
+ * <p/>
  * Maybe be in two resolutions: small and big.
  * Small is 300x300px.
  * Big is 1000x1000px.

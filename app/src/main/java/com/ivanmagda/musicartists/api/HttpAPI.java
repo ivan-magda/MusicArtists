@@ -1,9 +1,9 @@
 package com.ivanmagda.musicartists.api;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
-
-import com.ivanmagda.musicartists.R;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,37 +12,45 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-// TODO: research on caching requests.
-// TODO: timeout settings for connectios.
-// TODO: initialize when the application is launching.
+// TODO: cache http requests using HttpResponseCache.
 
-public class HttpAPI {
+public class HttpApi {
 
     // Properties.
 
     /**
      * Log tag for debug statements.
      */
-    private static String LOG_TAG = HttpAPI.class.getSimpleName();
+    private static String LOG_TAG = HttpApi.class.getSimpleName();
 
-    private static String baseURL;
+    // Network.
 
-    // Methods.
-
-    public static void init(Context appContext) {
-        baseURL = appContext.getString(R.string.http_api_url);
+    public static boolean isOnline(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    protected static String execute(String uri) {
+    protected static String execute(String requestURL) {
+        // Getting a connection to the resource referred to by this URL
+        // and trying to connect.
         HttpURLConnection connection = null;
 
         try {
-            URL url = new URL(baseURL + uri);
+            URL url = new URL(requestURL);
 
-            // Getting a connection to the resource referred to by this URL
-            // and trying to connect.
             connection = (HttpURLConnection) url.openConnection();
+            connection.setReadTimeout(10000);
+            connection.setConnectTimeout(15000);
             connection.setRequestMethod("GET");
+            connection.setDoInput(true);
+
+            // Starts the query.
             connection.connect();
 
             return processOnResponse(connection);
@@ -83,12 +91,16 @@ public class HttpAPI {
         } catch (IOException exception) {
             Log.e(LOG_TAG, "Failed to process on http response", exception);
         } finally {
-            if (reader != null) {
-                try {
+            try {
+                if (reader != null) {
                     reader.close();
-                } catch (final IOException exception) {
-                    Log.e(LOG_TAG, "Failed to close the stream", exception);
                 }
+
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+            } catch (IOException exception) {
+                Log.e(LOG_TAG, "Failed to close", exception);
             }
         }
 
