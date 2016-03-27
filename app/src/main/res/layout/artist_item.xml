@@ -6,20 +6,20 @@
     android:padding="16dp">
 
     <ImageView
-        android:id="@+id/coverImageView"
+        android:id="@+id/cover_image_view"
         android:layout_width="108dp"
         android:layout_height="108dp"
         android:layout_gravity="left|center_vertical"
-        android:scaleType="fitXY"
+        android:scaleType="fitCenter"
         android:src="@drawable/placeholder" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="8dp">
+        android:layout_marginLeft="16dp">
 
         <TextView
-            android:id="@+id/nameTextView"
+            android:id="@+id/name_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -28,17 +28,17 @@
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/genresTextView"
+            android:id="@+id/genres_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/nameTextView"
+            android:layout_below="@+id/name_text_view"
             android:layout_marginTop="4dp"
             android:text="genres"
             android:textColor="@android:color/darker_gray"
             android:textSize="14sp" />
 
         <TextView
-            android:id="@+id/summaryTextView"
+            android:id="@+id/summary_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"

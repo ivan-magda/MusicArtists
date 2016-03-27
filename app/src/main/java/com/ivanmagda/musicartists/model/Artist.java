@@ -61,6 +61,30 @@ public class Artist implements Parcelable {
         return genres;
     }
 
+    public String getGenresString() {
+        if (genres.length == 0) {
+            return "(Undefined)";
+        }
+
+        StringBuilder stringBuilder = new StringBuilder();
+
+        int length = genres.length;
+        for (int i = 0; i < length; i++) {
+            if (i == 0) {
+                stringBuilder.append(genres[i]);
+                if (length != 1) {
+                    stringBuilder.append(",");
+                }
+            } else if (i == length - 1) {
+                stringBuilder.append(" ").append(genres[i]);
+            } else {
+                stringBuilder.append(" ").append(genres[i]).append(",");
+            }
+        }
+
+        return stringBuilder.toString();
+    }
+
     public int getTracks() {
         return tracks;
     }
