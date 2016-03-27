@@ -1,4 +1,11 @@
 <resources>
-    <string name="app_name">MusicArtists</string>
+    <string name="app_name">Music Artists</string>
     <string name="action_settings">Settings</string>
+
+    <string name="album_single">album</string>
+    <string name="album_several">albums</string>
+    <string name="album_many">albums</string>
+    <string name="track_single">track</string>
+    <string name="track_several">tracks</string>
+    <string name="track_many">tracks</string>
 </resources>

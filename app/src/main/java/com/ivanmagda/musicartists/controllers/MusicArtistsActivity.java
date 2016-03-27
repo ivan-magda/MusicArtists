@@ -2,10 +2,8 @@ package com.ivanmagda.musicartists.controllers;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -18,11 +16,11 @@ import com.ivanmagda.musicartists.view.MusicArtistRecyclerViewAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MusicArtistsActivity extends BaseActivity {
 
     // Properties.
 
-    private static final String LOG_TAG = MainActivity.class.getSimpleName();
+    private static final String LOG_TAG = MusicArtistsActivity.class.getSimpleName();
 
     private List<Artist> artistList = new ArrayList<>();
     private RecyclerView recyclerView;
@@ -44,8 +42,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
+        activateToolbar();
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -55,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         if (ArtistHttpApi.isOnline(this)) {
             new DownloadMusicArtistsTask().execute();
         } else {
-            Toast.makeText(MainActivity.this, "You are offline. Please connect to the internet.",
+            Toast.makeText(MusicArtistsActivity.this, "You are offline. Please connect to the internet.",
                     Toast.LENGTH_SHORT).show();
         }
     }
@@ -75,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
             setArtistList(artists);
             Log.d(LOG_TAG, "Fetched " + getArtistList().size() + " artists");
 
-            musicArtistRecyclerViewAdapter = new MusicArtistRecyclerViewAdapter(MainActivity.this,
+            musicArtistRecyclerViewAdapter = new MusicArtistRecyclerViewAdapter(MusicArtistsActivity.this,
                     getArtistList());
             recyclerView.setAdapter(musicArtistRecyclerViewAdapter);
         }

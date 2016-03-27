@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Исполнители</string>
+    <string name="action_settings">Настройки</string>
+    <string name="album_many">альбомов</string>
+    <string name="album_several">альбома</string>
+    <string name="album_single">альбом</string>
+    <string name="track_many">песен</string>
+    <string name="track_several">песни</string>
+    <string name="track_single">песня</string>
+</resources>

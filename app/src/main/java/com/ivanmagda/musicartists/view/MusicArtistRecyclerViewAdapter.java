@@ -48,10 +48,16 @@ public class MusicArtistRecyclerViewAdapter extends RecyclerView.Adapter<MusicAr
         artistViewHolder.genresTextView.setText(artist.getGenresString());
 
         // Set artist summary.
-        String albumsString = getCorrectWord(artist.getAlbums(), "альбом", "альбома", "альбомов");
-        String tracksString = getCorrectWord(artist.getTracks(), "песня", "песни", "песен");
-        String artistSummary = artist.getAlbums() + " " + albumsString + ", "
-                + artist.getTracks() + " " + tracksString;
+        String albumsCorrect = getCorrectWord(artist.getAlbums(),
+                context.getString(R.string.album_single),
+                context.getString(R.string.album_several),
+                context.getString(R.string.album_many));
+        String tracksCorrect = getCorrectWord(artist.getTracks(),
+                context.getString(R.string.track_single),
+                context.getString(R.string.track_several),
+                context.getString(R.string.track_many));
+        String artistSummary = artist.getAlbums() + " " + albumsCorrect + ", "
+                + artist.getTracks() + " " + tracksCorrect;
         artistViewHolder.summaryTextView.setText(artistSummary);
     }
 
