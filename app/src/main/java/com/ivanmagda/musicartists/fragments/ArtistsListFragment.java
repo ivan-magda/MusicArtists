@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -43,6 +44,8 @@ public class ArtistsListFragment extends Fragment {
     private static final String LOG_TAG = ArtistsListFragment.class.getSimpleName();
 
     private OnArtistSelected listener;
+    private SwipeRefreshLayout swipeRefreshLayout;
+
     private ArtistsListRecyclerViewAdapter artistsListRecyclerViewAdapter;
     private List<Artist> artistsList = new ArrayList<>();
 
@@ -102,6 +105,14 @@ public class ArtistsListFragment extends Fragment {
             }
         }));
 
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                downloadArtists(activity);
+            }
+        });
+
         getArtists(activity);
 
         return view;
@@ -124,15 +135,18 @@ public class ArtistsListFragment extends Fragment {
         }
 
         if (artistsList == null || artistsList.size() == 0) {
-            // Download artists list.
-            if (ArtistHttpApi.isOnline(context)) {
-                new DownloadMusicArtistsTask().execute();
-            } else {
-                Toast.makeText(context, "You are offline. Please connect to the internet.",
-                        Toast.LENGTH_SHORT).show();
-            }
+            downloadArtists(context);
         } else {
             setArtistsList(artistsList);
+        }
+    }
+
+    private void downloadArtists(Context context) {
+        if (ArtistHttpApi.isOnline(context)) {
+            new DownloadMusicArtistsTask().execute();
+        } else {
+            Toast.makeText(context, "You are offline. Please connect to the internet.",
+                    Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -152,6 +166,7 @@ public class ArtistsListFragment extends Fragment {
     private class DownloadMusicArtistsTask extends AsyncTask<String, Void, List<Artist>> {
         @Override
         protected List<Artist> doInBackground(String... params) {
+            Log.d(LOG_TAG, "Downloading artists...");
             return ArtistHttpApi.getArtists();
         }
 
@@ -162,6 +177,8 @@ public class ArtistsListFragment extends Fragment {
             Collections.sort(artists);
             setArtistsList(artists);
             Log.d(LOG_TAG, "Fetched " + getArtistsList().size() + " artists");
+
+            swipeRefreshLayout.setRefreshing(false);
 
             saveArtists(getArtistsList(), getActivity());
         }
