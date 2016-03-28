@@ -12,7 +12,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class MusicArtistRecyclerViewAdapter extends RecyclerView.Adapter<MusicArtistViewHolder> {
+public class ArtistsListRecyclerViewAdapter extends RecyclerView.Adapter<ArtistsViewHolder> {
 
     // Properties.
 
@@ -21,7 +21,7 @@ public class MusicArtistRecyclerViewAdapter extends RecyclerView.Adapter<MusicAr
 
     // Initialize.
 
-    public MusicArtistRecyclerViewAdapter(Context context, List<Artist> artistList) {
+    public ArtistsListRecyclerViewAdapter(Context context, List<Artist> artistList) {
         this.context = context;
         this.artistList = artistList;
     }
@@ -29,13 +29,13 @@ public class MusicArtistRecyclerViewAdapter extends RecyclerView.Adapter<MusicAr
     // Methods.
 
     @Override
-    public MusicArtistViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public ArtistsViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.artist_item, null);
-        return new MusicArtistViewHolder(view);
+        return new ArtistsViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(MusicArtistViewHolder artistViewHolder, int position) {
+    public void onBindViewHolder(ArtistsViewHolder artistViewHolder, int position) {
         Artist artist = artistList.get(position);
 
         Picasso.with(context)

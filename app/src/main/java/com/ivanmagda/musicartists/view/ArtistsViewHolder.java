@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.ivanmagda.musicartists.R;
 
-public class MusicArtistViewHolder extends RecyclerView.ViewHolder {
+public class ArtistsViewHolder extends RecyclerView.ViewHolder {
 
     // Properties.
 
@@ -19,7 +19,7 @@ public class MusicArtistViewHolder extends RecyclerView.ViewHolder {
 
     // Initialize.
 
-    public MusicArtistViewHolder(View view) {
+    public ArtistsViewHolder(View view) {
         super(view);
 
         coverImageView = (ImageView) view.findViewById(R.id.cover_image_view);
