@@ -7,14 +7,17 @@ import android.support.annotation.NonNull;
 
 import com.ivanmagda.musicartists.R;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
 /**
  * Represents music artist.
  */
-public class Artist implements Parcelable, Comparable<Artist> {
+public class Artist implements Parcelable, Serializable, Comparable<Artist> {
 
     // Properties.
+
+    private static final long serialVersionUID = 1L;
 
     private static String LOG_TAG = Artist.class.getSimpleName();
 

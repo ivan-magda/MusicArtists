@@ -3,6 +3,8 @@ package com.ivanmagda.musicartists.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.Serializable;
+
 /**
  * Represents cover image of the artist.
  * <p/>
@@ -10,9 +12,11 @@ import android.os.Parcelable;
  * Small is 300x300px.
  * Big is 1000x1000px.
  */
-public class Cover implements Parcelable {
+public class Cover implements Parcelable, Serializable {
 
     // Properties.
+
+    private static final long serialVersionUID = 1L;
 
     private String small;
     private String big;

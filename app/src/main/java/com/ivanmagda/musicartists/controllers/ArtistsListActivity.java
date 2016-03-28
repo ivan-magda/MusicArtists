@@ -2,6 +2,7 @@ package com.ivanmagda.musicartists.controllers;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 
 import com.ivanmagda.musicartists.R;
@@ -37,7 +38,7 @@ public class ArtistsListActivity extends BaseActivity implements ArtistsListFrag
     @Override
     public void onArtistSelected(Artist artist) {
         Intent detailIntent = new Intent(ArtistsListActivity.this, ArtistDetailActivity.class);
-        detailIntent.putExtra(ARTIST_TRANSFER, artist);
+        detailIntent.putExtra(ARTIST_TRANSFER, (Parcelable) artist);
         startActivity(detailIntent);
 
         Log.d(LOG_TAG, "Did select " + artist.getName());
