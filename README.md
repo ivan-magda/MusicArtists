@@ -1,5 +1,5 @@
 # MusicArtists
-This is task test application for passing the selection of the 
+This is test application for passing the selection of the 
 [Yandex mobile school development 2016](https://academy.yandex.ru/events/mobdev/msk-2016/).
 
 The main purpose of the app is loading [JSON data](http://download.cdn.yandex.net/mobilization-2016/artists.json), 
