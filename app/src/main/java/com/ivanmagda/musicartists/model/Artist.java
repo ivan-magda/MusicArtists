@@ -1,14 +1,18 @@
 package com.ivanmagda.musicartists.model;
 
+import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
+
+import com.ivanmagda.musicartists.R;
 
 import java.util.Arrays;
 
 /**
  * Represents music artist.
  */
-public class Artist implements Parcelable {
+public class Artist implements Parcelable, Comparable<Artist> {
 
     // Properties.
 
@@ -119,6 +123,49 @@ public class Artist implements Parcelable {
                 '}';
     }
 
+    // Helpers.
+
+    public String getAlbumsSummary(Context context) {
+        return getAlbums() + " " + getCorrectWord(getAlbums(),
+                context.getString(R.string.album_single),
+                context.getString(R.string.album_several),
+                context.getString(R.string.album_many));
+    }
+
+    public String getTracksSummary(Context context) {
+        return getTracks() + " " + getCorrectWord(getTracks(),
+                context.getString(R.string.track_single),
+                context.getString(R.string.track_several),
+                context.getString(R.string.track_many));
+    }
+
+    /**
+     * Proper completion of words or numbers and words, taking into Russian morphology.
+     *
+     * @param number  - amount value
+     * @param single  - singular word string.
+     * @param several - several word string.
+     * @param many    - many word string.
+     * @return - correct word based on Russian morphology.
+     */
+    private String getCorrectWord(int number, String single, String several, String many) {
+        int value = number % 100;
+
+        if (value > 10 && value < 20) {
+            return many;
+        } else {
+            value = number % 10;
+
+            if (value == 1) {
+                return single;
+            } else if (value > 1 && value < 5) {
+                return several;
+            } else {
+                return many;
+            }
+        }
+    }
+
     // Parcelable.
 
     public static final Creator<Artist> CREATOR = new Creator<Artist>() {
@@ -148,6 +195,13 @@ public class Artist implements Parcelable {
         dest.writeString(link);
         dest.writeString(description);
         dest.writeParcelable(cover, flags);
+    }
+
+    // Comparable.
+
+    @Override
+    public int compareTo(@NonNull Artist another) {
+        return this.name.compareTo(another.getName());
     }
 
 }

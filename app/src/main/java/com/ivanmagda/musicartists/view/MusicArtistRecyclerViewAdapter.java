@@ -47,17 +47,7 @@ public class MusicArtistRecyclerViewAdapter extends RecyclerView.Adapter<MusicAr
         artistViewHolder.nameTextView.setText(artist.getName());
         artistViewHolder.genresTextView.setText(artist.getGenresString());
 
-        // Set artist summary.
-        String albumsCorrect = getCorrectWord(artist.getAlbums(),
-                context.getString(R.string.album_single),
-                context.getString(R.string.album_several),
-                context.getString(R.string.album_many));
-        String tracksCorrect = getCorrectWord(artist.getTracks(),
-                context.getString(R.string.track_single),
-                context.getString(R.string.track_several),
-                context.getString(R.string.track_many));
-        String artistSummary = artist.getAlbums() + " " + albumsCorrect + ", "
-                + artist.getTracks() + " " + tracksCorrect;
+        String artistSummary = artist.getAlbumsSummary(context) + ", " + artist.getTracksSummary(context);
         artistViewHolder.summaryTextView.setText(artistSummary);
     }
 
@@ -68,31 +58,9 @@ public class MusicArtistRecyclerViewAdapter extends RecyclerView.Adapter<MusicAr
 
     // Helpers.
 
-    /**
-     * Proper completion of words or numbers and words, taking into Russian morphology.
-     *
-     * @param number  - amount value
-     * @param single  - singular word string.
-     * @param several - several word string.
-     * @param many    - many word string.
-     * @return - correct word based on Russian morphology.
-     */
-    private String getCorrectWord(int number, String single, String several, String many) {
-        int value = number % 100;
-
-        if (value > 10 && value < 20) {
-            return many;
-        } else {
-            value = number % 10;
-
-            if (value == 1) {
-                return single;
-            } else if (value > 1 && value < 5) {
-                return several;
-            } else {
-                return many;
-            }
-        }
+    public void updateWithNewData(List<Artist> newArtists) {
+        artistList = newArtists;
+        notifyDataSetChanged();;
     }
 
 }

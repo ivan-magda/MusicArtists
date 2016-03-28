@@ -8,4 +8,6 @@
     <string name="track_many">песен</string>
     <string name="track_several">песни</string>
     <string name="track_single">песня</string>
+    <string name="biography">Биография</string>
+    <string name="title_activity_artist_detail">Подробнее</string>
 </resources>

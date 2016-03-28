@@ -8,4 +8,6 @@
     <string name="track_single">track</string>
     <string name="track_several">tracks</string>
     <string name="track_many">tracks</string>
+    <string name="title_activity_artist_detail">Details</string>
+    <string name="biography">Biography</string>
 </resources>
