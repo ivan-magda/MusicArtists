@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".controllers.ArtistsListActivity">
+    tools:context=".ui.controllers.ArtistsListActivity">
 
     <include layout="@layout/content_artists_list" />
 

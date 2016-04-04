@@ -1,4 +1,4 @@
-package com.ivanmagda.musicartists.controllers;
+package com.ivanmagda.musicartists.ui.controllers;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +7,8 @@ import android.widget.TextView;
 
 import com.ivanmagda.musicartists.R;
 import com.ivanmagda.musicartists.model.Artist;
+import com.ivanmagda.musicartists.Extras;
+import com.ivanmagda.musicartists.ui.utils.ArtistUtils;
 import com.squareup.picasso.Picasso;
 
 public class ArtistDetailActivity extends BaseActivity {
@@ -20,7 +22,7 @@ public class ArtistDetailActivity extends BaseActivity {
         activateToolbarWithHomeEnabled();
 
         Intent intent = getIntent();
-        Artist artist = intent.getParcelableExtra(ARTIST_TRANSFER);
+        Artist artist = intent.getParcelableExtra(Extras.EXTRA_ARTIST_TRANSFER);
 
         configureUIWithArtist(artist);
     }
@@ -37,11 +39,17 @@ public class ArtistDetailActivity extends BaseActivity {
 
         assert genresTextView != null && summaryTextView != null && biographyTextView != null;
 
-        // Artist genres.
-        genresTextView.setText(artist.getGenresString());
+        // Artist genres description.
+        String genresDescription = ArtistUtils.buildGenresArtistDescription(artist);
+        if (genresDescription == null) {
+            genresDescription = this.getString(R.string.genres_undefined_title);
+        }
+        genresTextView.setText(genresDescription);
 
         // Artist summary.
-        String summary = artist.getAlbumsSummary(this) + "    ·    " + artist.getTracksSummary(this);
+        String summary = ArtistUtils.buildArtistAlbumsSummary(artist, this)
+                + "    ·    "
+                + ArtistUtils.buildArtistTracksSummary(artist, this);
         summaryTextView.setText(summary);
 
         // Biography with capitalize first letter.

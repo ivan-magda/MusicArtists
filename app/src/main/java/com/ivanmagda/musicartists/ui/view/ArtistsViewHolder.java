@@ -1,4 +1,4 @@
-package com.ivanmagda.musicartists.view;
+package com.ivanmagda.musicartists.ui.view;
 
 
 import android.support.v7.widget.RecyclerView;

@@ -1,4 +1,4 @@
-package com.ivanmagda.musicartists.controllers;
+package com.ivanmagda.musicartists.ui.controllers;
 
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -8,8 +8,6 @@ import com.ivanmagda.musicartists.R;
 public class BaseActivity extends AppCompatActivity {
 
     // Properties.
-
-    public static final String ARTIST_TRANSFER = "ARTIST_TRANSFER";
 
     private Toolbar toolbar;
 

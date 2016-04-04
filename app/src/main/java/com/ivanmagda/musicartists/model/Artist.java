@@ -1,11 +1,8 @@
 package com.ivanmagda.musicartists.model;
 
-import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
-
-import com.ivanmagda.musicartists.R;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -18,8 +15,6 @@ public class Artist implements Parcelable, Serializable, Comparable<Artist> {
     // Properties.
 
     private static final long serialVersionUID = 1L;
-
-    private static String LOG_TAG = Artist.class.getSimpleName();
 
     private long id;
     private String name;
@@ -68,30 +63,6 @@ public class Artist implements Parcelable, Serializable, Comparable<Artist> {
         return genres;
     }
 
-    public String getGenresString() {
-        if (genres.length == 0) {
-            return "(Undefined)";
-        }
-
-        StringBuilder stringBuilder = new StringBuilder();
-
-        int length = genres.length;
-        for (int i = 0; i < length; i++) {
-            if (i == 0) {
-                stringBuilder.append(genres[i]);
-                if (length != 1) {
-                    stringBuilder.append(",");
-                }
-            } else if (i == length - 1) {
-                stringBuilder.append(" ").append(genres[i]);
-            } else {
-                stringBuilder.append(" ").append(genres[i]).append(",");
-            }
-        }
-
-        return stringBuilder.toString();
-    }
-
     public int getTracks() {
         return tracks;
     }
@@ -124,49 +95,6 @@ public class Artist implements Parcelable, Serializable, Comparable<Artist> {
                 ", description='" + description + '\'' +
                 ", cover=" + cover +
                 '}';
-    }
-
-    // Helpers.
-
-    public String getAlbumsSummary(Context context) {
-        return getAlbums() + " " + getCorrectWord(getAlbums(),
-                context.getString(R.string.album_single),
-                context.getString(R.string.album_several),
-                context.getString(R.string.album_many));
-    }
-
-    public String getTracksSummary(Context context) {
-        return getTracks() + " " + getCorrectWord(getTracks(),
-                context.getString(R.string.track_single),
-                context.getString(R.string.track_several),
-                context.getString(R.string.track_many));
-    }
-
-    /**
-     * Proper completion of words or numbers and words, taking into Russian morphology.
-     *
-     * @param number  - amount value
-     * @param single  - singular word string.
-     * @param several - several word string.
-     * @param many    - many word string.
-     * @return - correct word based on Russian morphology.
-     */
-    private String getCorrectWord(int number, String single, String several, String many) {
-        int value = number % 100;
-
-        if (value > 10 && value < 20) {
-            return many;
-        } else {
-            value = number % 10;
-
-            if (value == 1) {
-                return single;
-            } else if (value > 1 && value < 5) {
-                return several;
-            } else {
-                return many;
-            }
-        }
     }
 
     // Parcelable.

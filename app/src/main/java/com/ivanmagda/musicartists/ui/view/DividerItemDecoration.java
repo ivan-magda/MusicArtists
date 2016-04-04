@@ -1,4 +1,4 @@
-package com.ivanmagda.musicartists.view;
+package com.ivanmagda.musicartists.ui.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;

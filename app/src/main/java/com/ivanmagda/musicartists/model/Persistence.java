@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+// TODO: http://developer.android.com/intl/ru/reference/android/net/http/HttpResponseCache.html
 public final class Persistence {
 
     // Properties.

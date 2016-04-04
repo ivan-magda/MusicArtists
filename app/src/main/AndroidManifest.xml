@@ -10,7 +10,7 @@
         android:label="@string/app_name"
         android:theme="@style/Theme.MusicArtists">
         <activity
-            android:name=".controllers.ArtistsListActivity"
+            android:name=".ui.controllers.ArtistsListActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,13 +19,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".controllers.ArtistDetailActivity"
+            android:name=".ui.controllers.ArtistDetailActivity"
             android:label="@string/title_activity_artist_detail"
-            android:parentActivityName=".controllers.ArtistsListActivity"
+            android:parentActivityName=".ui.controllers.ArtistsListActivity"
             android:theme="@style/Theme.MusicArtists">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".controllers.ArtistsListActivity" />
+                android:value=".ui.controllers.ArtistsListActivity" />
         </activity>
     </application>
 

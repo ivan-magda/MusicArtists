@@ -1,4 +1,4 @@
-package com.ivanmagda.musicartists.view;
+package com.ivanmagda.musicartists.ui.view;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import com.ivanmagda.musicartists.R;
 import com.ivanmagda.musicartists.model.Artist;
+import com.ivanmagda.musicartists.ui.utils.ArtistUtils;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -45,9 +46,17 @@ public class ArtistsListRecyclerViewAdapter extends RecyclerView.Adapter<Artists
                 .into(artistViewHolder.coverImageView);
 
         artistViewHolder.nameTextView.setText(artist.getName());
-        artistViewHolder.genresTextView.setText(artist.getGenresString());
 
-        String artistSummary = artist.getAlbumsSummary(context) + ", " + artist.getTracksSummary(context);
+        // Genres description of the artist.
+        String genresDescription = ArtistUtils.buildGenresArtistDescription(artist);
+        if (genresDescription == null) {
+            genresDescription = context.getString(R.string.genres_undefined_title);
+        }
+        artistViewHolder.genresTextView.setText(genresDescription);
+
+        String artistSummary = ArtistUtils.buildArtistAlbumsSummary(artist, context)
+                + ", "
+                + ArtistUtils.buildArtistTracksSummary(artist, context);
         artistViewHolder.summaryTextView.setText(artistSummary);
     }
 
@@ -60,7 +69,7 @@ public class ArtistsListRecyclerViewAdapter extends RecyclerView.Adapter<Artists
 
     public void updateWithNewData(List<Artist> newArtists) {
         artistList = newArtists;
-        notifyDataSetChanged();;
+        notifyDataSetChanged();
     }
 
 }

@@ -1,9 +1,11 @@
-package com.ivanmagda.musicartists.fragments;
+package com.ivanmagda.musicartists.ui.fragments;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -19,9 +21,11 @@ import com.ivanmagda.musicartists.R;
 import com.ivanmagda.musicartists.api.ArtistHttpApi;
 import com.ivanmagda.musicartists.model.Artist;
 import com.ivanmagda.musicartists.model.Persistence;
-import com.ivanmagda.musicartists.view.ArtistsListRecyclerViewAdapter;
-import com.ivanmagda.musicartists.view.DividerItemDecoration;
-import com.ivanmagda.musicartists.view.RecyclerItemClickListener;
+import com.ivanmagda.musicartists.Extras;
+import com.ivanmagda.musicartists.ui.controllers.ArtistDetailActivity;
+import com.ivanmagda.musicartists.ui.view.ArtistsListRecyclerViewAdapter;
+import com.ivanmagda.musicartists.ui.view.DividerItemDecoration;
+import com.ivanmagda.musicartists.ui.view.RecyclerItemClickListener;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -33,17 +37,10 @@ import static com.ivanmagda.musicartists.model.Persistence.ARTISTS_PERSISTENCE_K
 
 public class ArtistsListFragment extends Fragment {
 
-    // Types.
-
-    public interface OnArtistSelected {
-        void onArtistSelected(Artist artist);
-    }
-
     // Properties.
 
     private static final String LOG_TAG = ArtistsListFragment.class.getSimpleName();
 
-    private OnArtistSelected listener;
     private SwipeRefreshLayout swipeRefreshLayout;
 
     private ArtistsListRecyclerViewAdapter artistsListRecyclerViewAdapter;
@@ -59,28 +56,12 @@ public class ArtistsListFragment extends Fragment {
         // Required empty public constructor.
     }
 
-    // Getters/Setters.
-
-    public List<Artist> getArtistsList() {
-        return artistsList;
-    }
-
-    public void setArtistsList(List<Artist> artistsList) {
-        this.artistsList = artistsList;
-        artistsListRecyclerViewAdapter.updateWithNewData(artistsList);
-    }
-
     // Life Cycle.
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        if (context instanceof OnArtistSelected) {
-            listener = (OnArtistSelected) context;
-        } else {
-            throw new ClassCastException(context.toString() + " must implement OnArtistSelected");
-        }
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getArtists();
     }
 
     @Nullable
@@ -98,10 +79,11 @@ public class ArtistsListFragment extends Fragment {
                 artistsList);
         recyclerView.setAdapter(artistsListRecyclerViewAdapter);
 
-        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(activity, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(activity, recyclerView,
+                new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                listener.onArtistSelected(artistsList.get(position));
+                onArtistSelected(artistsList.get(position));
             }
         }));
 
@@ -109,19 +91,32 @@ public class ArtistsListFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                downloadArtists(activity);
+                downloadArtists();
             }
         });
 
-        getArtists(activity);
+        if (artistsList != null) {
+            artistsListRecyclerViewAdapter.updateWithNewData(artistsList);
+        }
 
         return view;
     }
 
+    // Helpers.
+
+    void onArtistSelected(Artist artist) {
+        Intent detailIntent = new Intent(getActivity(), ArtistDetailActivity.class);
+        detailIntent.putExtra(Extras.EXTRA_ARTIST_TRANSFER, (Parcelable) artist);
+        startActivity(detailIntent);
+
+        Log.d(LOG_TAG, "Did select " + artist.getName());
+    }
+
     // Persistence storage support.
 
-    private void getArtists(Context context) {
-        List<Artist> artistsList = null;
+    private void getArtists() {
+        Context context = getActivity();
+
         try {
             artistsList = (List<Artist>) Persistence.readObject(context,
                     ARTISTS_PERSISTENCE_KEY);
@@ -135,29 +130,29 @@ public class ArtistsListFragment extends Fragment {
         }
 
         if (artistsList == null || artistsList.size() == 0) {
-            downloadArtists(context);
-        } else {
-            setArtistsList(artistsList);
+            downloadArtists();
         }
     }
 
-    private void downloadArtists(Context context) {
+    private void downloadArtists() {
+        Context context = getActivity();
         if (ArtistHttpApi.isOnline(context)) {
             new DownloadMusicArtistsTask().execute();
         } else {
+            swipeRefreshLayout.setRefreshing(false);
             Toast.makeText(context, "You are offline. Please connect to the internet.",
                     Toast.LENGTH_SHORT).show();
         }
     }
 
     // Save the list of artists to persistence storage.
-    private void saveArtists(List<Artist> artistsList, Context context) {
+    private void saveArtists(List<Artist> artistsList) {
         try {
             Persistence.writeObject(getActivity(), ARTISTS_PERSISTENCE_KEY,
-                    getArtistsList());
+                    artistsList);
             Log.d(LOG_TAG, "Successfully saved artists to the persistence storage");
         } catch (IOException exception) {
-            Log.e(LOG_TAG, "Failed to write artists list to persistnce storage", exception);
+            Log.e(LOG_TAG, "Failed to write artists list to persistence storage", exception);
         }
     }
 
@@ -174,13 +169,18 @@ public class ArtistsListFragment extends Fragment {
         protected void onPostExecute(List<Artist> artists) {
             super.onPostExecute(artists);
 
+            if (artists == null) {
+                return;
+            }
+
             Collections.sort(artists);
-            setArtistsList(artists);
-            Log.d(LOG_TAG, "Fetched " + getArtistsList().size() + " artists");
+            artistsList = artists;
+            artistsListRecyclerViewAdapter.updateWithNewData(artistsList);
+            saveArtists(artistsList);
+
+            Log.d(LOG_TAG, "Fetched " + artistsList.size() + " artists");
 
             swipeRefreshLayout.setRefreshing(false);
-
-            saveArtists(getArtistsList(), getActivity());
         }
 
     }
