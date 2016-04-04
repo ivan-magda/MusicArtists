@@ -18,7 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.ivanmagda.musicartists.R;
-import com.ivanmagda.musicartists.api.ArtistHttpApi;
+import com.ivanmagda.musicartists.api.ArtistHttpAPI;
 import com.ivanmagda.musicartists.model.Artist;
 import com.ivanmagda.musicartists.model.Persistence;
 import com.ivanmagda.musicartists.Extras;
@@ -136,7 +136,7 @@ public class ArtistsListFragment extends Fragment {
 
     private void downloadArtists() {
         Context context = getActivity();
-        if (ArtistHttpApi.isOnline(context)) {
+        if (ArtistHttpAPI.isOnline(context)) {
             new DownloadMusicArtistsTask().execute();
         } else {
             swipeRefreshLayout.setRefreshing(false);
@@ -162,7 +162,7 @@ public class ArtistsListFragment extends Fragment {
         @Override
         protected List<Artist> doInBackground(String... params) {
             Log.d(LOG_TAG, "Downloading artists...");
-            return ArtistHttpApi.getArtists();
+            return ArtistHttpAPI.getArtists();
         }
 
         @Override

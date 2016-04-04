@@ -14,14 +14,14 @@ import java.net.URL;
 
 // TODO: cache http requests using HttpResponseCache.
 
-public class HttpApi {
+public class HttpAPI {
 
     // Properties.
 
     /**
      * Log tag for debug statements.
      */
-    private static String LOG_TAG = HttpApi.class.getSimpleName();
+    private static String LOG_TAG = HttpAPI.class.getSimpleName();
 
     // Network.
 
@@ -29,11 +29,7 @@ public class HttpApi {
         ConnectivityManager connectivityManager = (ConnectivityManager) context
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected()) {
-            return true;
-        } else {
-            return false;
-        }
+        return networkInfo != null && networkInfo.isConnected();
     }
 
     protected static String execute(String requestURL) {

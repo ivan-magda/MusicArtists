@@ -14,11 +14,11 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ArtistHttpApi extends HttpApi {
+public class ArtistHttpAPI extends HttpAPI {
 
     // Properties.
 
-    private static String LOG_TAG = ArtistHttpApi.class.getSimpleName();
+    private static String LOG_TAG = ArtistHttpAPI.class.getSimpleName();
 
     // URLs.
     private static final String API_SCHEME = "http";
