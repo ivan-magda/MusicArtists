@@ -20,13 +20,13 @@ import android.widget.Toast;
 import com.ivanmagda.musicartists.R;
 import com.ivanmagda.musicartists.api.ArtistHttpApi;
 import com.ivanmagda.musicartists.model.Artist;
-import com.ivanmagda.musicartists.model.Persistence;
+import com.ivanmagda.musicartists.util.PersistenceUtils;
 import com.ivanmagda.musicartists.Extras;
 import com.ivanmagda.musicartists.ui.controllers.ArtistDetailActivity;
 import com.ivanmagda.musicartists.ui.view.ArtistsListRecyclerViewAdapter;
 import com.ivanmagda.musicartists.ui.view.DividerItemDecoration;
 import com.ivanmagda.musicartists.ui.view.RecyclerItemClickListener;
-import com.ivanmagda.musicartists.utils.ConnectivityUtils;
+import com.ivanmagda.musicartists.util.ConnectivityUtils;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static com.ivanmagda.musicartists.model.Persistence.ARTISTS_PERSISTENCE_KEY;
+import static com.ivanmagda.musicartists.util.PersistenceUtils.ARTISTS_PERSISTENCE_KEY;
 
 public class ArtistsListFragment extends Fragment {
 
@@ -82,11 +82,11 @@ public class ArtistsListFragment extends Fragment {
 
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(activity, recyclerView,
                 new RecyclerItemClickListener.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                onArtistSelected(artistsList.get(position));
-            }
-        }));
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        onArtistSelected(artistsList.get(position));
+                    }
+                }));
 
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -119,7 +119,7 @@ public class ArtistsListFragment extends Fragment {
         Context context = getActivity();
 
         try {
-            artistsList = (List<Artist>) Persistence.readObject(context,
+            artistsList = (List<Artist>) PersistenceUtils.readObject(context,
                     ARTISTS_PERSISTENCE_KEY);
             Log.d(LOG_TAG, "Successfully retrieved artists from the persistence storage");
         } catch (FileNotFoundException e) {
@@ -149,7 +149,7 @@ public class ArtistsListFragment extends Fragment {
     // Save the list of artists to persistence storage.
     private void saveArtists(List<Artist> artistsList) {
         try {
-            Persistence.writeObject(getActivity(), ARTISTS_PERSISTENCE_KEY,
+            PersistenceUtils.writeObject(getActivity(), ARTISTS_PERSISTENCE_KEY,
                     artistsList);
             Log.d(LOG_TAG, "Successfully saved artists to the persistence storage");
         } catch (IOException exception) {

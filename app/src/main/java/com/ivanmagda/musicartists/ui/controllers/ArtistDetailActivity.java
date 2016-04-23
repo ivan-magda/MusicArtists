@@ -8,7 +8,7 @@ import android.widget.TextView;
 import com.ivanmagda.musicartists.R;
 import com.ivanmagda.musicartists.model.Artist;
 import com.ivanmagda.musicartists.Extras;
-import com.ivanmagda.musicartists.utils.ArtistUtils;
+import com.ivanmagda.musicartists.util.ArtistUtils;
 import com.squareup.picasso.Picasso;
 
 public class ArtistDetailActivity extends BaseActivity {

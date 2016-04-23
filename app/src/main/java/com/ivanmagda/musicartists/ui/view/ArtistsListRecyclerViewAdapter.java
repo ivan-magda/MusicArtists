@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 
 import com.ivanmagda.musicartists.R;
 import com.ivanmagda.musicartists.model.Artist;
-import com.ivanmagda.musicartists.utils.ArtistUtils;
+import com.ivanmagda.musicartists.util.ArtistUtils;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;

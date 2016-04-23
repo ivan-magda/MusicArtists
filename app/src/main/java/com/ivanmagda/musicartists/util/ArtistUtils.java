@@ -1,4 +1,4 @@
-package com.ivanmagda.musicartists.utils;
+package com.ivanmagda.musicartists.util;
 
 import android.content.Context;
 
