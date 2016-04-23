@@ -18,12 +18,10 @@ public class ArtistsListRecyclerViewAdapter extends RecyclerView.Adapter<Artists
     // Properties.
 
     private List<Artist> artistList;
-    private Context context;
 
     // Initialize.
 
-    public ArtistsListRecyclerViewAdapter(Context context, List<Artist> artistList) {
-        this.context = context;
+    public ArtistsListRecyclerViewAdapter(List<Artist> artistList) {
         this.artistList = artistList;
     }
 
@@ -38,6 +36,7 @@ public class ArtistsListRecyclerViewAdapter extends RecyclerView.Adapter<Artists
     @Override
     public void onBindViewHolder(ArtistsViewHolder artistViewHolder, int position) {
         Artist artist = artistList.get(position);
+        Context context = artistViewHolder.itemView.getContext();
 
         Picasso.with(context)
                 .load(artist.getCover().getSmall())

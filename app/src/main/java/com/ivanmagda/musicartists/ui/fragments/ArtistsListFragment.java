@@ -76,9 +76,7 @@ public class ArtistsListFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
         recyclerView.addItemDecoration(new DividerItemDecoration(activity, R.drawable.divider));
 
-        artistsListRecyclerViewAdapter = new ArtistsListRecyclerViewAdapter(
-                activity,
-                artistsList);
+        artistsListRecyclerViewAdapter = new ArtistsListRecyclerViewAdapter(artistsList);
         recyclerView.setAdapter(artistsListRecyclerViewAdapter);
 
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(activity, recyclerView,
