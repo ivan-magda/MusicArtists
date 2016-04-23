@@ -26,6 +26,7 @@ import com.ivanmagda.musicartists.ui.controllers.ArtistDetailActivity;
 import com.ivanmagda.musicartists.ui.view.ArtistsListRecyclerViewAdapter;
 import com.ivanmagda.musicartists.ui.view.DividerItemDecoration;
 import com.ivanmagda.musicartists.ui.view.RecyclerItemClickListener;
+import com.ivanmagda.musicartists.utils.ConnectivityUtils;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -136,7 +137,7 @@ public class ArtistsListFragment extends Fragment {
 
     private void downloadArtists() {
         Context context = getActivity();
-        if (ArtistHttpApi.isOnline(context)) {
+        if (ConnectivityUtils.isOnline(context)) {
             new DownloadMusicArtistsTask().execute();
         } else {
             swipeRefreshLayout.setRefreshing(false);

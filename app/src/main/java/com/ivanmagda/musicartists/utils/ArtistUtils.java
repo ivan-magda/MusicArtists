@@ -1,4 +1,4 @@
-package com.ivanmagda.musicartists.ui.utils;
+package com.ivanmagda.musicartists.utils;
 
 import android.content.Context;
 
@@ -25,7 +25,7 @@ public class ArtistUtils {
         return stringBuilder.toString();
     }
 
-    static public String buildArtistAlbumsSummary(Artist artist, Context context) {
+    public static String buildArtistAlbumsSummary(Artist artist, Context context) {
         int albums = artist.getAlbums();
         return albums + " " + getProperWordCompletion(albums,
                 context.getString(R.string.album_single),
@@ -33,7 +33,7 @@ public class ArtistUtils {
                 context.getString(R.string.album_many));
     }
 
-    static public String buildArtistTracksSummary(Artist artist, Context context) {
+    public static String buildArtistTracksSummary(Artist artist, Context context) {
         int tracks = artist.getTracks();
         return tracks + " " + getProperWordCompletion(tracks,
                 context.getString(R.string.track_single),
@@ -52,7 +52,7 @@ public class ArtistUtils {
      * @param many    - many word string.
      * @return - correct word based on Russian morphology.
      */
-    static private String getProperWordCompletion(int number, String single, String several, String many) {
+    private static String getProperWordCompletion(int number, String single, String several, String many) {
         int value = number % 100;
 
         if (value > 10 && value < 20) {
