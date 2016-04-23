@@ -5,6 +5,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.ivanmagda.musicartists.R;
 import com.ivanmagda.musicartists.model.Artist;
@@ -13,7 +15,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class ArtistsListRecyclerViewAdapter extends RecyclerView.Adapter<ArtistsViewHolder> {
+public class ArtistsListRecyclerViewAdapter extends RecyclerView.Adapter<ArtistsListRecyclerViewAdapter.ArtistsViewHolder> {
 
     // Properties.
 
@@ -69,6 +71,30 @@ public class ArtistsListRecyclerViewAdapter extends RecyclerView.Adapter<Artists
     public void updateWithNewData(List<Artist> newArtists) {
         artistList = newArtists;
         notifyDataSetChanged();
+    }
+
+    // ArtistsViewHolder.
+
+    public static class ArtistsViewHolder extends RecyclerView.ViewHolder {
+
+        // Properties.
+
+        protected ImageView coverImageView;
+        protected TextView nameTextView;
+        protected TextView genresTextView;
+        protected TextView summaryTextView;
+
+        // Initialize.
+
+        public ArtistsViewHolder(View view) {
+            super(view);
+
+            coverImageView = (ImageView) view.findViewById(R.id.cover_image_view);
+            nameTextView = (TextView) view.findViewById(R.id.name_text_view);
+            genresTextView = (TextView) view.findViewById(R.id.genres_text_view);
+            summaryTextView = (TextView) view.findViewById(R.id.summary_text_view);
+        }
+
     }
 
 }
