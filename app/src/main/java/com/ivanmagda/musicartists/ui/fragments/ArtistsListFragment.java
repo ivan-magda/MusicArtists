@@ -43,8 +43,9 @@ public class ArtistsListFragment extends Fragment {
     private static final String LOG_TAG = ArtistsListFragment.class.getSimpleName();
 
     private SwipeRefreshLayout swipeRefreshLayout;
-
     private ArtistsListRecyclerViewAdapter artistsListRecyclerViewAdapter;
+
+    private DownloadMusicArtistsTask requestTask;
     private List<Artist> artistsList = new ArrayList<>();
 
     // Initializes.
@@ -103,9 +104,19 @@ public class ArtistsListFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        if (requestTask != null) {
+            requestTask.cancel(true);
+            requestTask = null;
+        }
+    }
+
     // Helpers.
 
-    void onArtistSelected(Artist artist) {
+    private void onArtistSelected(Artist artist) {
         Intent detailIntent = new Intent(getActivity(), ArtistDetailActivity.class);
         detailIntent.putExtra(Extras.EXTRA_ARTIST_TRANSFER, (Parcelable) artist);
         startActivity(detailIntent);
@@ -138,7 +149,8 @@ public class ArtistsListFragment extends Fragment {
     private void downloadArtists() {
         Context context = getActivity();
         if (ConnectivityUtils.isOnline(context)) {
-            new DownloadMusicArtistsTask().execute();
+            requestTask = new DownloadMusicArtistsTask();
+            requestTask.execute();
         } else {
             swipeRefreshLayout.setRefreshing(false);
             Toast.makeText(context, "You are offline. Please connect to the internet.",
@@ -169,6 +181,12 @@ public class ArtistsListFragment extends Fragment {
         @Override
         protected void onPostExecute(List<Artist> artists) {
             super.onPostExecute(artists);
+
+            // Check for activity existing, when thread is executing.
+            if (!isVisible() || isCancelled() ||
+                    (getActivity() != null && getActivity().isFinishing())) {
+                return;
+            }
 
             if (artists == null) {
                 return;
