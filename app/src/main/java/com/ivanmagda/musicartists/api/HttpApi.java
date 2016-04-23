@@ -12,8 +12,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-// TODO: cache http requests using HttpResponseCache.
-
 public class HttpApi {
 
     // Properties.
@@ -70,6 +68,14 @@ public class HttpApi {
         InputStream inputStream = null;
 
         try {
+            // Did we receive a successful 2XX status code.
+            int responseCode = connection.getResponseCode();
+            if (responseCode < 200 || responseCode > 299) {
+                Log.w(LOG_TAG, "Received status code other then 2XX, status code: " + responseCode);
+                return null;
+            }
+            Log.d(LOG_TAG, "Response status code: " + responseCode);
+
             inputStream = connection.getInputStream();
 
             if (inputStream == null) {
